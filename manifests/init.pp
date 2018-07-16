@@ -7,6 +7,7 @@ define ffnord::mesh(
   $range_ipv4,        # ipv4 range allocated to community in cidr notation, e.g. '10.35.0.1/16'
   $mesh_ipv4,         # ipv4 address in cidr notation, e.g. '10.35.0.1/19'
   $mesh_ipv6,         # ipv6 address in cidr notation, e.g. 'fd35:f308:a922::ff00/64'
+  $ffnw_ipv6,         # ipv6 address in cidr notation, e.g. 'fd35:f308:a922::ff00/64'
   $mesh_peerings,     # path to the local peerings description yaml file
   $mesh_mtu = 1280,   # mtu used, default only suitable for fastd via ipv4
 
@@ -38,6 +39,9 @@ define ffnord::mesh(
   $mesh_ipv6_prefix    = ip_prefix($mesh_ipv6)
   $mesh_ipv6_prefixlen = ip_prefixlen($mesh_ipv6)
   $mesh_ipv6_address   = ip_address($mesh_ipv6)
+  $ffnw_ipv6_prefix    = ip_prefix($ffnw_ipv6)
+  $ffnw_ipv6_prefixlen = ip_prefixlen($ffnw_ipv6)
+  $ffnw_ipv6_address   = ip_address($ffnw_ipv6)
 
   Class['ffnord::firewall'] ->
   ffnord::bridge { "bridge_${mesh_code}":
@@ -46,6 +50,9 @@ define ffnord::mesh(
     mesh_ipv6_address    => $mesh_ipv6_address,
     mesh_ipv6_prefix     => $mesh_ipv6_prefix,
     mesh_ipv6_prefixlen  => $mesh_ipv6_prefixlen,
+    ffnw_ipv6_address    => $ffnw_ipv6_address,
+    ffnw_ipv6_prefix     => $ffnw_ipv6_prefix,
+    ffnw_ipv6_prefixlen  => $ffnw_ipv6_prefixlen,
     mesh_ipv4_address    => $mesh_ipv4_address,
     mesh_ipv4_netmask    => $mesh_ipv4_netmask,
     mesh_ipv4_prefix     => $mesh_ipv4_prefix,

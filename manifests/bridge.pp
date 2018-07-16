@@ -3,6 +3,9 @@ define ffnord::bridge( $mesh_code
                     , $mesh_ipv6_address
                     , $mesh_ipv6_prefix
                     , $mesh_ipv6_prefixlen
+                    , $ffnw_ipv6_address
+                    , $ffnw_ipv6_prefix
+                    , $ffnw_ipv6_prefixlen
                     , $mesh_ipv4_address
                     , $mesh_ipv4_netmask
                     , $mesh_ipv4_prefix

@@ -10,8 +10,17 @@ iface br-<%= @mesh_code %> inet6 static
   post-down /sbin/ip -6 rule del pref 31001 iif $IFACE unreachable
   post-up    /sbin/ip -6 route replace <%= @mesh_ipv6_prefix %>/<%= @mesh_ipv6_prefixlen %> dev $IFACE table 42
   address <%= @mesh_ipv6_address %>
-  # TODO bits configurable
   netmask <%= @mesh_ipv6_prefixlen %>
+
+iface br-<%= @mesh_code %> inet6 static
+  pre-up    echo 0 > /proc/sys/net/ipv6/conf/br-<%= @mesh_code %>/accept_dad
+  pre-up    /sbin/ip -6 rule add from 2a07:59c6:ec02::/48 lookup ffnw
+  pre-up    /sbin/ip -6 rule add to 2a07:59c6:ec02::/48 lookup ffnw
+  post-down /sbin/ip -6 rule del from 2a07:59c6:ec02::/48 lookup ffnw
+  post-down /sbin/ip -6 rule del to 2a07:59c6:ec02::/48 lookup ffnw
+  address <%= @ffnw_ipv6_address %>
+  netmask <%= @ffnw_ipv6_prefixlen %>
+
 iface br-<%= @mesh_code %> inet static
   pre-up    /sbin/ip rule add pref 31000 iif $IFACE table 42
   pre-up    /sbin/ip rule add pref 31001 iif $IFACE unreachable
