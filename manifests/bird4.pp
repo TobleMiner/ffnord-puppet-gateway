@@ -27,6 +27,12 @@ class ffnord::bird4 (
     owner => root,
     group => root,
     require => File['/etc/bird/'];
+  '/etc/bird/bird.conf.d/':
+    ensure => directory,
+    mode => '0755',
+    owner => root,
+    group => root,
+    require => File['/etc/bird/'];
   '/etc/bird/bird.conf':
     ensure => file,
     mode => '0644',

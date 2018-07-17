@@ -46,6 +46,24 @@ class ffnord::bird6 (
       target => '/etc/bird/bird6.conf',
       require => File['/etc/bird/bird6.conf'],
       notify => Service['bird6'];
+
+    '/etc/bird/bird6.conf.d/100-mesh.conf':
+      ensure => file,
+      mode => '0644',
+      content => template('ffnord/etc/bird/bird6.mesh.conf.erb'),
+      require => [
+        # Rely on transitivity of require
+        File['/etc/bird/bird6.conf'],
+        File['/etc/bird/bird6.peers.d/'],
+      ],
+      notify => Service['bird6'],
+      before => Class['ffnord::resources::meta'];
+    '/etc/bird/bird6.peers.d/':
+      ensure => directory,
+      mode => '0755',
+      owner => root,
+      group => root,
+      require => File['/etc/bird/'];
   }
 
   service {
